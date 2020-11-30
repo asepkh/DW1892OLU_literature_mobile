@@ -1,25 +1,26 @@
 import React, { useState } from "react";
 import { useQuery } from "react-query";
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet, RefreshControl } from "react-native";
 import { Icon, Header, Input, Text } from "react-native-elements";
 import { API } from "../Config/Api";
 import LiteraturesList from "../Component/LiteratureList";
 import Logo from "../Component/Logo";
 
 export default function Home({ navigation }) {
-  const { isLoading, error, data: literature, refetch } = useQuery(
-    "getLiteratures",
-    async () => await API.get("/literatures")
-  );
   const [search, setSearch] = useState({
     active: false,
     keyword: "",
     keyword_press: "",
   });
+  const searchQ = search.active ? search.keyword_press : "";
+  const { isLoading, error, data: literature, refetch, isFetching } = useQuery(
+    `getLiteratures?q=${searchQ}`,
+    async () => await API.get(`/literatures?q=${searchQ}&status=Approved`)
+  );
+
   return (
     <>
       <Header
-        barStyle="dark-content"
         leftComponent={
           search.active ? (
             <Input
@@ -35,7 +36,7 @@ export default function Home({ navigation }) {
               inputStyle={styles.searchInput}
               value={search.keyword}
               onChangeText={(value) => setSearch({ ...search, keyword: value })}
-              onKeyPress={() =>
+              onSubmitEditing={() =>
                 setSearch({ ...search, keyword_press: search.keyword })
               }
             />
@@ -51,7 +52,13 @@ export default function Home({ navigation }) {
               color="white"
               size={25}
               containerStyle={styles.headerContainerButton}
-              onPress={() => setSearch({ ...search, active: !search.active })}
+              onPress={() =>
+                setSearch({
+                  active: !search.active,
+                  keyword: "",
+                  keyword_press: "",
+                })
+              }
             />
             <Icon
               name="sliders"
@@ -65,9 +72,9 @@ export default function Home({ navigation }) {
       />
       <ScrollView>
         <View style={styles.bodyContainer}>
-          {isLoading ? (
-            <Text style={{ color: "white", justifyContent: "center" }}>
-              Loading ....
+          {isLoading || error ? (
+            <Text style={styles.textLoading}>
+              {!error ? "Loading ...." : `Error: ${error}`}
             </Text>
           ) : (
             <LiteraturesList
@@ -113,5 +120,9 @@ const styles = StyleSheet.create({
   headerContainerButton: {
     marginLeft: 10,
     width: 40,
+  },
+  textLoading: {
+    color: "white",
+    textAlign: "center",
   },
 });

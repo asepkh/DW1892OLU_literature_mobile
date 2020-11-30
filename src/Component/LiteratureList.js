@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  TouchableHighlight,
-  View,
-  Image,
-  Text,
-  StyleSheet,
-  FlatList,
-} from "react-native";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 
 import LiteratureCard from "./LiteratureCard";
 
@@ -21,12 +14,14 @@ const LiteraturesList = ({ literatures, refetch, profile }) => {
   const renderItem = ({ item, index }) => (
     <View style={styles.render}>
       {item.status !== "Approved" && (
-        <View style={overlayStyle}>
-          {item.status === "Pending" ? (
-            <Text style={styles.pending}>Waiting to be verified</Text>
-          ) : (
-            <Text style={styles.rejected}>Rejected</Text>
-          )}
+        <View style={styles.overlay}>
+          <View style={styles.statusBackground}>
+            {item.status === "Pending" ? (
+              <Text style={styles.pending}>Waiting to be verified</Text>
+            ) : (
+              <Text style={styles.rejected}>Rejected</Text>
+            )}
+          </View>
         </View>
       )}
       <LiteratureCard
@@ -40,15 +35,12 @@ const LiteraturesList = ({ literatures, refetch, profile }) => {
     </View>
   );
 
-  return !literatures ? (
-    <Text>error</Text>
-  ) : (
-    // <View style={styles.container}>
+  return literatures.length > 0 ? (
     <FlatList
       data={data}
       numColumns={2}
       renderItem={renderItem}
-      showsVerticalScrollIndicator={false}
+      showsVerticalScrollIndicator={true}
       columnWrapperStyle={styles.column}
       onRefresh={() => {
         setIsRefresh(true);
@@ -57,7 +49,8 @@ const LiteraturesList = ({ literatures, refetch, profile }) => {
       }}
       refreshing={isRefresh}
     />
-    // </View>
+  ) : (
+    <Text style={styles.textResult}>Result Not Found</Text>
   );
 };
 
@@ -74,23 +67,38 @@ const styles = StyleSheet.create({
     width: "47%",
     marginBottom: 25,
   },
-  pending: {},
-  rejected: {},
+  textResult: {
+    color: "white",
+    textAlign: "center",
+  },
+  overlay: {
+    display: "flex",
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
+    top: -5,
+    bottom: -5,
+    left: -5,
+    right: -5,
+    zIndex: 10,
+    backgroundColor: "rgba(10,10,10,0.5)",
+    borderRadius: 10,
+  },
+  statusBackground: {
+    width: "95%",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgba(255,255,255,0.5)",
+  },
+  pending: {
+    color: "yellow",
+    fontWeight: "700",
+  },
+  rejected: {
+    color: "red",
+    fontWeight: "700",
+  },
 });
-
-const overlayStyle = {
-  display: "flex",
-  position: "absolute",
-  alignItems: "center",
-  justifyContent: "center",
-  top: "-5px",
-  bottom: "-5px",
-  left: "-5px",
-  right: "-5px",
-  zIndex: "10",
-  backgroundColor: "rgba(0,0,0,0.5)",
-  borderRadius: 10,
-};
 
 LiteraturesList.defaultProps = {
   profile: false,

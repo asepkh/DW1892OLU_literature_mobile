@@ -1,23 +1,15 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { View, Image } from "react-native";
-// import { LoginContext } from '../Context/Login';
+import Color from "../Utils/Color";
 
 export default function Splash({ navigation }) {
-  // const [state] = useContext(LoginContext);
-  // useEffect(() => {
-  // 	setTimeout(() => {
-  // 		navigation.navigate(state.isLogin ? "Home" : "Login"
-  // 		);
-  // 	}, 3000);
-  // }, []);
-
   return (
     <View
       style={{
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#161616",
+        backgroundColor: Color.secondary,
       }}
     >
       <Image

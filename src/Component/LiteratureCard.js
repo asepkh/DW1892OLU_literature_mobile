@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { Image, BottomSheet, ListItem } from "react-native-elements";
-import { useMutation, useQuery } from "react-query";
 
 import { LoginContext } from "../Context/Login";
-import { API } from "../Config/Api";
 
 const win = Dimensions.get("window");
 const imageHeight = Math.round((win.width / 20) * 27);
@@ -87,11 +85,11 @@ const LiteratureCard = ({ id, title, author, year, thumbnail }) => {
         />
         <Text style={styles.title}>{title}</Text>
         <View style={styles.idContainer}>
-          <View style={{ flex: 2 }}>
-            <Text style={styles.id}>{author}</Text>
+          <View style={{ flex: 3 }}>
+            <Text style={styles.author}>{author}</Text>
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.id}>{year}</Text>
+            <Text style={styles.year}>{year}</Text>
           </View>
         </View>
       </View>
@@ -130,9 +128,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  id: {
+  author: {
     color: "grey",
     fontSize: 11,
+  },
+  year: {
+    color: "grey",
+    fontSize: 11,
+    textAlign: "right",
   },
 });
 

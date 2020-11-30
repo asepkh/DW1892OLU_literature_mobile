@@ -75,9 +75,7 @@ export default function Root(props) {
           animationEnabled: false,
         }}
       >
-        {state.authLoading ? (
-          <RootStack.Screen name="Splash" component={Splash} />
-        ) : state.loading ? (
+        {state.authLoading || state.loading ? (
           <RootStack.Screen name="Splash" component={Splash} />
         ) : state.isLogin ? (
           <RootStack.Screen name="MainNavigator" component={MainNavigator} />

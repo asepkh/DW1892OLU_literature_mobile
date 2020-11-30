@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { Card, Avatar, Text, ListItem } from "react-native-elements";
+import { View, StyleSheet } from "react-native";
+import { Avatar, Text, ListItem, Icon, Header } from "react-native-elements";
 import { LoginContext } from "../Context/Login";
+import Color from "../Utils/Color";
 
 export default function Profile({ navigation }) {
   const [state, dispatch] = useContext(LoginContext);
@@ -12,87 +13,99 @@ export default function Profile({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <Card containerStyle={styles.cardContainer}>
-        <View style={styles.cardFill}>
+    <>
+      <View style={styles.container}>
+        <ListItem
+          containerStyle={styles.containerListItem}
+          friction={90} //
+          tension={100} // These props are passed to the parent component (here TouchableScale)
+          activeScale={0.95} //
+          onPress={() => navigation.navigate("ProfileDetail")}
+        >
           <Avatar
+            size="large"
             rounded
-            size="xlarge"
-            containerStyle={{ borderColor: "white", borderWidth: 2 }}
             source={{
               uri: state.userData.photoUrl,
             }}
-          />
-          <View style={styles.cardFillContent}>
-            <Text style={styles.textDesc}>Email</Text>
-            <Text style={styles.textNote}>{state.userData.email}</Text>
-            <Card.Divider />
-            <Text style={styles.textDesc}>Phone</Text>
-            <Text style={styles.textNote}>{state.userData.phone}</Text>
-            <Card.Divider />
-            <Text style={styles.textDesc}>Name</Text>
-            <Text style={styles.textNote}>{state.userData.fullName}</Text>
-            <Card.Divider />
-            <Text style={styles.textDesc}>Gender</Text>
-            <Text style={styles.textNote}>{state.userData.gender}</Text>
-            <Card.Divider />
-            <Text style={styles.textDesc}>Address</Text>
-            <Text style={styles.textNote}>{state.userData.address}</Text>
-            <Card.Divider />
-          </View>
-        </View>
-      </Card>
-      <TouchableOpacity
-        style={styles.containerBtnLogout}
-        onPress={handleLogout}
-      >
-        <Text style={styles.textBtnLogout}>Logout</Text>
-      </TouchableOpacity>
-    </View>
+            title={state.userData.fullName}
+          ></Avatar>
+          <ListItem.Content>
+            <ListItem.Title style={styles.textListItemName}>
+              {`${state.userData.fullName} (${state.userData.role})`}
+            </ListItem.Title>
+            <ListItem.Subtitle style={styles.textListItemMail}>
+              {state.userData.email}
+            </ListItem.Subtitle>
+            <ListItem.Subtitle style={styles.textListItemMail}>
+              {state.userData.address}
+            </ListItem.Subtitle>
+          </ListItem.Content>
+        </ListItem>
+        <ListItem
+          containerStyle={styles.containerListItem}
+          onPress={() => navigation.navigate("MyLiterature")}
+        >
+          <Icon type="font-awesome" name="book" color={Color.white} />
+          <ListItem.Content>
+            <ListItem.Title style={styles.textListItem}>
+              My Literature
+            </ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+        <ListItem
+          containerStyle={styles.containerListItem}
+          onPress={() => props.navigation.navigate("myDownload")}
+        >
+          <Icon type="feather" name="download" color={Color.white} />
+          <ListItem.Content>
+            <ListItem.Title style={styles.textListItem}>
+              My Download
+            </ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+        <ListItem
+          onPress={() => handleLogout()}
+          containerStyle={styles.containerListItemEnd}
+        >
+          <Icon type="feather" name="log-out" color={Color.white} />
+          <ListItem.Content>
+            <ListItem.Title style={styles.textListItem}>Logout</ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
+      </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: Color.secondary,
+    paddingTop: 0,
+    paddingBottom: 0,
   },
-  cardContainer: {
-    backgroundColor: "#252525",
-    borderColor: "#151515",
-    borderRadius: 30,
+  containerListItem: {
+    backgroundColor: Color.secondary,
+    color: Color.white,
+    borderBottomWidth: 0.5,
+    borderBottomColor: Color.white,
   },
-  cardFill: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+  containerListItemEnd: {
+    backgroundColor: Color.secondary,
+    color: Color.white,
   },
-  cardFillContent: {
-    marginTop: 15,
-    flexDirection: "column",
+  textListItem: {
+    color: Color.white,
   },
-  textDesc: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: "white",
+  textListItemName: {
+    color: Color.white,
+    fontSize: 15,
+    fontWeight: "700",
   },
-  textNote: {
-    color: "white",
-  },
-  containerBtnLogout: {
-    width: "90%",
-    height: 45,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 9,
-    padding: 15,
-    borderRadius: 8,
-    backgroundColor: "white",
-  },
-  textBtnLogout: {
-    color: "black",
-    fontWeight: "500",
-    fontSize: 18,
+  textListItemMail: {
+    color: Color.white,
+    fontSize: 11,
   },
 });

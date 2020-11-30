@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { Button } from "react-native-elements";
 import {
   View,
   StyleSheet,
@@ -7,7 +8,9 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  ScrollView,
 } from "react-native";
+
 import { useMutation } from "react-query";
 import { API, setAuthToken } from "../Config/Api";
 import { LoginContext } from "../Context/Login";
@@ -56,65 +59,49 @@ export default function Login({ navigation }) {
     }
   });
 
-  // const handleLogin = () => {
-  //     dispatch({
-  //         type: "LOGIN_SUCCESS",
-  //         payload: {
-  //             name: "Andrea Hirata",
-  //             email: "andreahirata@gmail.com",
-  //             password: "123456789",
-  //             gender: "Male",
-  //             phone: "0813-3333-2222",
-  //             address: "JL. Pegangsaan Timur, Jakarta",
-  //             photoUrl:
-  //                 "https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,q_auto:best,w_640/v1553850277/zxw7yum1w0wx0ynkhg5r.jpg",
-
-  //         },
-  //     });
-  // }
-
   return (
     <View style={styles.container}>
       <Image
         source={require("../Assets/logo.png")}
         style={{ marginBottom: 5, width: "90%", resizeMode: "contain" }}
       />
-
-      <TextInput
-        style={styles.input}
-        placeholderTextColor="darkgray"
-        placeholder="Email"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
-      />
-      <TextInput
-        style={styles.input}
-        placeholderTextColor="darkgray"
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-      {/* {isLoading
-                ? <Text style={[styles.textRegister]}>Loading ....</Text>
-            :*/}
-      <TouchableOpacity style={styles.containerBtnLogin} onPress={handleLogin}>
-        <Text style={styles.textBtnLogin}>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.containerRegister}
-        onPress={() => {
-          navigation.navigate("Register");
-        }}
-      >
-        <Text style={[styles.textRegister]}>
-          <>
-            Don't Have Account?{" "}
-            <Text style={styles.textRegisterHere}> Register Here</Text>
-          </>
-        </Text>
-      </TouchableOpacity>
+      <ScrollView style={{ width: "100%" }}>
+        <TextInput
+          style={styles.input}
+          placeholderTextColor="darkgray"
+          placeholder="Email"
+          keyboardType="email-address"
+          value={email}
+          onChangeText={setEmail}
+        />
+        <TextInput
+          style={styles.input}
+          placeholderTextColor="darkgray"
+          placeholder="Password"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+        <Button
+          title="Login"
+          buttonStyle={styles.containerBtnLogin}
+          onPress={handleLogin}
+          loading={isLoading}
+        />
+        <TouchableOpacity
+          style={styles.containerRegister}
+          onPress={() => {
+            navigation.navigate("Register");
+          }}
+        >
+          <Text style={styles.textRegister}>
+            <>
+              Don't Have Account?{" "}
+              <Text style={styles.textRegisterHere}> Register Here</Text>
+            </>
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 }
@@ -125,7 +112,6 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingTop: 120,
     alignItems: "center",
-    backgroundColor: "#161616",
   },
   input: {
     backgroundColor: "#e8e8e8",
@@ -138,17 +124,10 @@ const styles = StyleSheet.create({
   },
   containerBtnLogin: {
     width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
     marginTop: 9,
     padding: 15,
     borderRadius: 8,
     backgroundColor: "#af2e1c",
-  },
-  textBtnLogin: {
-    color: "white",
-    fontWeight: "500",
-    fontSize: 18,
   },
   containerRegister: {
     width: "100%",

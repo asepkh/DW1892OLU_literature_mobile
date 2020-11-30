@@ -5,15 +5,20 @@ import { StatusBar } from "expo-status-bar";
 
 import { LoginContext } from "../Context/Login";
 import LiteraturesList from "../Component/LiteratureList";
-import Logo from "../Component/Logo";
 
 export default function Collection({ navigation }) {
   const [state] = useContext(LoginContext);
   return (
     <>
       <Header
-        barStyle="dark-content"
-        centerComponent={<Logo style={styles.centerHeader} />}
+        centerComponent={{
+          text: "MY COLLECTION",
+          style: {
+            color: "#fff",
+            fontSize: 18,
+            fontWeight: "700",
+          },
+        }}
         containerStyle={styles.headerContainer}
       />
       <ScrollView>

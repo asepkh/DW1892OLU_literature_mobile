@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import {
-  View,
   StyleSheet,
-  Text,
-  TextInput,
   TouchableOpacity,
-  ScrollView,
+  View,
   Image,
+  ScrollView,
+  TextInput,
 } from "react-native";
+import Color from "../Utils/Color";
+import { Text, Button } from "react-native-elements";
 import { Picker } from "@react-native-community/picker";
 
 const Register = ({ navigation }) => {
@@ -36,7 +37,6 @@ const Register = ({ navigation }) => {
             setFormData({ ...formData, fullName: value })
           }
         />
-
         <TextInput
           style={styles.input}
           placeholderTextColor={"darkgray"}
@@ -77,14 +77,17 @@ const Register = ({ navigation }) => {
           value={formData.address}
           onChangeText={(value) => setFormData({ ...formData, address: value })}
         />
-        <TouchableOpacity
-          style={styles.containerBtnLogin}
+        <Button
+          title="Sign Up"
           onPress={() => {
             navigation.navigate("Login");
           }}
-        >
-          <Text style={styles.textBtnLogin}>Sign Up</Text>
-        </TouchableOpacity>
+          buttonStyle={{
+            marginTop: 8,
+            width: "100%",
+            backgroundColor: Color.primary,
+          }}
+        />
         <TouchableOpacity
           onPress={() => navigation.navigate("Login")}
           style={styles.containerLogin}
@@ -113,28 +116,14 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 8,
     color: "black",
-    marginVertical: 8,
     fontSize: 16,
+    marginVertical: 8,
   },
   containerLogin: {
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
-  },
-  containerBtnLogin: {
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 9,
-    padding: 15,
-    borderRadius: 8,
-    backgroundColor: "#af2e1c",
-  },
-  textBtnLogin: {
-    color: "white",
-    fontWeight: "500",
-    fontSize: 16,
   },
   textLogin: {
     fontWeight: "500",
