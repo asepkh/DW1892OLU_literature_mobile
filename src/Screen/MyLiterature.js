@@ -7,7 +7,8 @@ import { API } from "../Config/Api";
 import { LoginContext } from "../Context/Login";
 import LiteraturesList from "../Component/LiteratureList";
 
-export default function MyLiterature({ navigation }) {
+export default function MyLiterature({ route, navigation }) {
+  const { root_navigation } = route.params;
   const [state] = useContext(LoginContext);
 
   const { isLoading, error, data: literature, refetch } = useQuery(
@@ -27,6 +28,7 @@ export default function MyLiterature({ navigation }) {
             profile={true}
             literatures={literature.data.data}
             refetch={refetch}
+            navigation={root_navigation}
           />
         )}
       </View>

@@ -1,13 +1,28 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { View, ScrollView, StyleSheet } from "react-native";
 import { Header } from "react-native-elements";
 import { StatusBar } from "expo-status-bar";
 
 import { LoginContext } from "../Context/Login";
+import { API } from "../Config/Api";
 import LiteraturesList from "../Component/LiteratureList";
 
 export default function Collection({ navigation }) {
-  const [state] = useContext(LoginContext);
+  const [state, dispatch] = useContext(LoginContext);
+  async function refetch() {
+    try {
+      const resAuth = await API.get("/auth");
+      dispatch({
+        type: "LOAD_USER",
+        payload: resAuth.data.data,
+      });
+    } catch (err) {
+      dispatch({
+        type: "AUTH_ERROR",
+      });
+    }
+  }
+
   return (
     <>
       <Header
@@ -23,7 +38,10 @@ export default function Collection({ navigation }) {
       />
       <ScrollView>
         <View style={styles.bodyContainer}>
-          <LiteraturesList literatures={state.userData.collections_data} />
+          <LiteraturesList
+            literatures={state.userData.collections_data}
+            refetch={refetch}
+          />
         </View>
       </ScrollView>
       <StatusBar style="light" hidden={false} />
@@ -35,30 +53,10 @@ const styles = StyleSheet.create({
   bodyContainer: {
     margin: 15,
   },
-  searchInput: {
-    paddingLeft: 10,
-    color: "white",
-  },
-  searchInputContainer: {
-    borderBottomWidth: 0,
-  },
   headerContainer: {
     backgroundColor: "#161616",
     color: "white",
     borderBottomColor: "white",
     borderBottomWidth: 1.5,
-  },
-  centerHeader: {
-    width: "80%",
-    resizeMode: "contain",
-    marginBottom: 10,
-    marginLeft: 5,
-  },
-  rightHeader: {
-    flexDirection: "row",
-  },
-  headerContainerButton: {
-    marginLeft: 10,
-    width: 40,
   },
 });

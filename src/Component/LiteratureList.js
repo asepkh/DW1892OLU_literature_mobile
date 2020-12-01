@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList } from "react-native";
 
 import LiteratureCard from "./LiteratureCard";
 
-const LiteraturesList = ({ literatures, refetch, profile }) => {
+const LiteraturesList = ({ literatures, refetch, profile, navigation }) => {
   const [isRefresh, setIsRefresh] = useState(false);
 
   const data = literatures.filter((literature) => {
@@ -30,6 +30,7 @@ const LiteraturesList = ({ literatures, refetch, profile }) => {
         author={item.author}
         year={item.publication.substring(0, 4)}
         thumbnail={item.thumbnailUrl}
+        navigation={navigation}
         key={index}
       />
     </View>

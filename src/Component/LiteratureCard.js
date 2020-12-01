@@ -1,16 +1,15 @@
 import React, { useEffect, useState, useContext } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { Image, BottomSheet, ListItem } from "react-native-elements";
+import { useMutation } from "react-query";
 
 import { LoginContext } from "../Context/Login";
+import { API } from "../Config/Api";
 
-const win = Dimensions.get("window");
-const imageHeight = Math.round((win.width / 20) * 27);
-
-const LiteratureCard = ({ id, title, author, year, thumbnail }) => {
+const LiteratureCard = ({ id, title, author, year, thumbnail, navigation }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
-  const [state, dispatch] = useContext(LoginContext);
+  const [state] = useContext(LoginContext);
 
   useEffect(() => {
     if (
@@ -20,16 +19,36 @@ const LiteratureCard = ({ id, title, author, year, thumbnail }) => {
     }
   }, []);
 
-  // const [bookmark] = useMutation((id) => API.post(`/coleections/${id}`));
-  // const [unbookmark] = useMutation((id) => API.delete(`/unbookmark/${id}`));
+  const [collection] = useMutation(async (params) => {
+    const { id, isDelete } = params;
+    try {
+      isDelete
+        ? API.delete(`/collection/${id}`)
+        : await API.post(`/collection/${id}`);
+
+      try {
+        const resAuth = await API.get("/auth");
+        dispatch({
+          type: "LOAD_USER",
+          payload: resAuth.data.data,
+        });
+      } catch (err) {
+        dispatch({
+          type: "AUTH_ERROR",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  });
 
   const addBookmark = () => {
-    // bookmark(id);
+    collection({ id, isDelete: false });
     setBookmarked(true);
   };
 
   const removeBookmark = () => {
-    // unbookmark(id);
+    collection({ id, isDelete: true });
     setBookmarked(false);
   };
 
@@ -82,6 +101,7 @@ const LiteratureCard = ({ id, title, author, year, thumbnail }) => {
           onLongPress={() => {
             setIsVisible(true);
           }}
+          onPress={() => navigation.navigate("Detail", { id })}
         />
         <Text style={styles.title}>{title}</Text>
         <View style={styles.idContainer}>

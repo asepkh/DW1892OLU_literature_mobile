@@ -1,15 +1,10 @@
 import React, { useContext } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { Card, Avatar, Text, ListItem } from "react-native-elements";
+import { View, StyleSheet } from "react-native";
+import { Card, Avatar, Text } from "react-native-elements";
 import { LoginContext } from "../Context/Login";
 
 export default function ProfileDetail({ navigation }) {
   const [state, dispatch] = useContext(LoginContext);
-  const handleLogout = () => {
-    dispatch({
-      type: "LOGOUT",
-    });
-  };
 
   return (
     <View style={styles.container}>
@@ -21,7 +16,7 @@ export default function ProfileDetail({ navigation }) {
           uri: state.userData.photoUrl,
         }}
       />
-      <View style={styles.cardFillContent}>
+      <View style={styles.content}>
         <Text style={styles.textDesc}>Email</Text>
         <Text style={styles.textNote}>{state.userData.email}</Text>
         <Card.Divider />
@@ -49,17 +44,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 15,
   },
-  cardContainer: {
-    backgroundColor: "#252525",
-    borderColor: "#151515",
-    borderRadius: 30,
-  },
-  cardFill: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  cardFillContent: {
+  content: {
     marginTop: 15,
     flexDirection: "column",
   },
@@ -70,20 +55,5 @@ const styles = StyleSheet.create({
   },
   textNote: {
     color: "white",
-  },
-  containerBtnLogout: {
-    width: "90%",
-    height: 45,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 9,
-    padding: 15,
-    borderRadius: 8,
-    backgroundColor: "white",
-  },
-  textBtnLogout: {
-    color: "black",
-    fontWeight: "500",
-    fontSize: 18,
   },
 });

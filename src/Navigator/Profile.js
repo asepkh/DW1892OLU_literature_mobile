@@ -9,7 +9,8 @@ import ProfileDetail from "../Screen/ProfileDetail";
 import MyLiterature from "../Screen/MyLiterature";
 
 const ProfileStack = createStackNavigator();
-export default function ProfileNavigator() {
+export default function ProfileNavigator({ route }) {
+  const { root_navigation } = route.params;
   return (
     <ProfileStack.Navigator
       screenOptions={{
@@ -52,6 +53,7 @@ export default function ProfileNavigator() {
             <HeaderBackButton {...props} tintColor="white" />
           ),
         }}
+        initialParams={{ root_navigation }}
       />
     </ProfileStack.Navigator>
   );

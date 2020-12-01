@@ -6,7 +6,8 @@ import { API } from "../Config/Api";
 import LiteraturesList from "../Component/LiteratureList";
 import Logo from "../Component/Logo";
 
-export default function Home({ navigation }) {
+export default function Home({ route }) {
+  const { root_navigation } = route.params;
   const [search, setSearch] = useState({
     active: false,
     keyword: "",
@@ -79,6 +80,7 @@ export default function Home({ navigation }) {
           ) : (
             <LiteraturesList
               literatures={literature.data.data}
+              navigation={root_navigation}
               refetch={refetch}
             />
           )}

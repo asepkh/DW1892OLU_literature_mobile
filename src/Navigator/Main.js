@@ -42,7 +42,7 @@ const TabList = [
 
 const Tab = createBottomTabNavigator();
 
-export default function MainNavigator() {
+export default function MainNavigator({ navigation }) {
   return (
     <>
       <Tab.Navigator
@@ -81,6 +81,7 @@ export default function MainNavigator() {
                 />
               ),
             }}
+            initialParams={{ root_navigation: navigation }}
           />
         ))}
       </Tab.Navigator>

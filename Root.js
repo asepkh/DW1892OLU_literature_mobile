@@ -13,6 +13,7 @@ import MainNavigator from "./src/Navigator/Main";
 import AuthNavigator from "./src/Navigator/Auth";
 
 import Splash from "./src/Screen/Splash";
+import Detail from "./src/Screen/Detail";
 
 import { LoginContext } from "./src/Context/Login";
 
@@ -78,7 +79,10 @@ export default function Root(props) {
         {state.authLoading || state.loading ? (
           <RootStack.Screen name="Splash" component={Splash} />
         ) : state.isLogin ? (
-          <RootStack.Screen name="MainNavigator" component={MainNavigator} />
+          <>
+            <RootStack.Screen name="MainNavigator" component={MainNavigator} />
+            <RootStack.Screen name="Detail" component={Detail} />
+          </>
         ) : (
           <RootStack.Screen name="AuthNavigator" component={AuthNavigator} />
         )}
